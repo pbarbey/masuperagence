@@ -6,12 +6,14 @@ use App\Repository\PropertyRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 
 class PropertyController extends AbstractController
 {
-  public function __construct(PropertyRepository $repository)
+  public function __construct(PropertyRepository $repository, EntityManagerInterface $em)
   {
     $this->repository = $repository;
+    $this->em = $em;
   }
 
   /**
@@ -35,9 +37,6 @@ class PropertyController extends AbstractController
     // $em = $this->getDoctrine()->getManager();
     // $em->persist($property);
     // $em->flush();
-
-    $property = $this->repository->FindAllVisible();
-    dump($property);
 
     return $this->render('property/index.html.twig',[
       'current_menu' => 'properties'
