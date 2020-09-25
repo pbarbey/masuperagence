@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class PropertyController extends AbstractController
 {
@@ -20,7 +22,7 @@ class PropertyController extends AbstractController
   * @Route("/biens", name="property.index")
   * @return Response
   */
-  public function index(): Response
+  public function index(PaginatorInterface $paginator, Request $request): Response
   {
     // $property = new Property();
     // $property->setTitle('Mon premier bien')
@@ -38,8 +40,15 @@ class PropertyController extends AbstractController
     // $em->persist($property);
     // $em->flush();
 
+    $properties = $paginator->paginate(
+      $this->repository->FindAllVisibleQuery(),
+      $request->query->getInt('page',1),
+      6
+    );
+
     return $this->render('property/index.html.twig',[
-      'current_menu' => 'properties'
+      'current_menu' => 'properties',
+      'properties' => $properties
     ]);
   }
 
