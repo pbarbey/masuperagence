@@ -16,3 +16,7 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 symfony
+
+###> symfony/web-server-bundle ###
+/.web-server-pid
+###< symfony/web-server-bundle ###
